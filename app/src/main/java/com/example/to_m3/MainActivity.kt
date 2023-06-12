@@ -16,45 +16,32 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.rememberNavController
+import com.example.to_m3.ui.navigation.ToM3NavHost
 import com.example.to_m3.ui.theme.ToM3Theme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            ToM3Theme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Greeting("Android")
-                }
-            }
+            ToM3App()
         }
     }
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
-        Image(
-            painter = painterResource(id = R.drawable.jetpack_compose_icon),
-            contentDescription = null
-        )
-        Text(
-            text = "Hello $name!",
-            style = MaterialTheme.typography.displayLarge
-        )
+fun ToM3App() {
 
+    ToM3Theme() {
+        val navController = rememberNavController()
+        ToM3NavHost(navController = navController )
     }
-
 }
 
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
+fun ToM3AppPreview() {
     ToM3Theme {
-        Greeting("Android")
+       ToM3App()
     }
 }
