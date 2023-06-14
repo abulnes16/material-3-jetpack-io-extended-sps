@@ -1,5 +1,6 @@
 package com.example.to_m3.ui.components
 
+import android.util.Log
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -27,6 +28,7 @@ fun ToM3TopBar(
     modifier: Modifier = Modifier,
     title: String? = null,
 ) {
+    Log.d("[Top Tap App]", currentScreen.route)
     CenterAlignedTopAppBar(
         title = { Text(text = title ?: stringResource(id = R.string.app_name)) },
         navigationIcon = {

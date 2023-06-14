@@ -3,4 +3,15 @@
 
     <!--Home Screen-->
     <string name="my_todos">My To-Do\'s</string>
+
+    <!--Form-->
+    <string name="create_todo">Create To-Do</string>
+    <string name="edit_todo">Edit To-Do</string>
+    <string name="title">Title</string>
+    <string name="category">Category</string>
+    <string name="description">Description</string>
+    <string name="save">Save</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="is_completed">Is completed?</string>
 </resources>

@@ -16,11 +16,15 @@ fun ToM3NavHost(
 ) {
     NavHost(navController = navController, startDestination = Home.route, modifier = modifier) {
         composable(Home.route) {
-            HomeScreen()
+            HomeScreen(
+                onTodoClick = { todoId ->
+                    navController.navigate("${Details.route}/${todoId}")
+                }
+            )
         }
         composable(Details.routeWithArgs, arguments = Details.arguments) { backStackEntry ->
             val todoId = backStackEntry.arguments?.getString(Details.argName)
-            DetailsScreen()
+            DetailsScreen(todoId = todoId)
         }
     }
 }

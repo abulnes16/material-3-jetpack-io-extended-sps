@@ -12,10 +12,12 @@ import androidx.compose.ui.Modifier
 fun Screen(
     modifier: Modifier = Modifier,
     alignment: Alignment.Horizontal = Alignment.CenterHorizontally,
+    arrangement: Arrangement.Vertical = Arrangement.Top,
     content: @Composable () -> Unit
 ) {
     Column(
         horizontalAlignment = alignment,
+        verticalArrangement = arrangement,
         modifier = modifier.fillMaxSize()
     ) {
         content()

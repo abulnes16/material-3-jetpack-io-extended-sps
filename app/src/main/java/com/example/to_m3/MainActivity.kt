@@ -1,6 +1,7 @@
 package com.example.to_m3
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -28,6 +29,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.to_m3.ui.components.Screen
 import com.example.to_m3.ui.components.ToM3TopBar
+import com.example.to_m3.ui.navigation.Details
 import com.example.to_m3.ui.navigation.Home
 import com.example.to_m3.ui.navigation.ToM3NavHost
 import com.example.to_m3.ui.navigation.destinations
@@ -50,11 +52,8 @@ fun ToM3App() {
         val navController = rememberNavController()
         val currentBackStack by navController.currentBackStackEntryAsState()
         val currentDestination = currentBackStack?.destination
-        val currentScreen = destinations.find { screen ->
-            screen.route.startsWith(
-                currentDestination?.route ?: "home"
-            )
-        } ?: Home
+        val route = currentDestination?.route ?: "home"
+        val currentScreen = if (route.startsWith("home")) Home else Details
 
         Scaffold(
             topBar = {
@@ -63,14 +62,6 @@ fun ToM3App() {
                     onGoBack = { navController.popBackStack() },
                     title = currentScreen.title
                 )
-            },
-            floatingActionButton = {
-                if (currentScreen === Home) {
-                    FloatingActionButton(onClick = { /*TODO*/ }) {
-                        Icon(imageVector = Icons.Default.Add, contentDescription = null)
-                    }
-                }
-
             }
         ) { contentPadding ->
             ToM3NavHost(navController = navController, modifier = Modifier.padding(contentPadding))
