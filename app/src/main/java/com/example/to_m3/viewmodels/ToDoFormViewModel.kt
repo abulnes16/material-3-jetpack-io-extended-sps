@@ -8,11 +8,12 @@ import androidx.lifecycle.ViewModel
 import com.example.to_m3.data.models.ToDo
 import com.example.to_m3.data.models.ToDoFormEvent
 import com.example.to_m3.data.models.ToDoFormState
+import com.example.to_m3.data.repository.ToDoRepository
 import java.util.Date
 
 const val TAG = "[ToDoFormViewModel]"
 
-class ToDoFormViewModel(private val todoId: Int? = null) : ViewModel() {
+class ToDoFormViewModel(private val toDoRepository: ToDoRepository ,private val todoId: Int? = null) : ViewModel() {
     var state by mutableStateOf(
         ToDoFormState(isModalOpen = false, title = "", description = "", category = "")
     )
@@ -29,11 +30,26 @@ class ToDoFormViewModel(private val todoId: Int? = null) : ViewModel() {
     }
 
     fun onSaveToDo() {
+        // We validate that the ToDo is completed
+       if (!validateToDo()){
+           return
+       }
+
+
         if (todoId != null) {
             updateTodo()
         } else {
             createTodo()
         }
+    }
+
+    private fun validateToDo(): Boolean{
+        val (_, title, category, description) = state
+        if(title.isBlank() || category.isBlank() || description.isBlank()){
+            return false
+        }
+
+        return true
     }
 
     private fun createTodo() {
