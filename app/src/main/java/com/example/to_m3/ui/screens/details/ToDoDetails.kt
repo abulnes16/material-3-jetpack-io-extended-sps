@@ -36,7 +36,7 @@ import com.example.to_m3.viewmodels.ToDoFormViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailsScreen(
-    todoId: String?,
+    todoId: Int?,
     modifier: Modifier = Modifier,
     toDoFormViewModel: ToDoFormViewModel = viewModel()
 ) {
@@ -111,7 +111,7 @@ fun DetailsScreen(
 @Composable
 fun DetailScreenPreview() {
     ToM3Theme() {
-        DetailsScreen(todoId = "1")
+        DetailsScreen(todoId = 1)
     }
 
 }

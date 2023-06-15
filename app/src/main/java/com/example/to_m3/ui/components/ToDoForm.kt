@@ -29,7 +29,7 @@ import com.example.to_m3.viewmodels.ToDoViewModel
 fun ToDoForm(
     toDoViewModel: ToDoFormViewModel,
     modifier: Modifier = Modifier,
-    todoId: String? = null
+    todoId: Int? = null
 ) {
     val scrollState = rememberScrollState()
     Column(
@@ -109,6 +109,6 @@ fun ToDoFormPreview() {
 fun ToDoFormPreviewEdit() {
     val toDoViewModel = ToDoFormViewModel()
     ToM3Theme() {
-        ToDoForm(todoId = "1", toDoViewModel = toDoViewModel)
+        ToDoForm(todoId = 1, toDoViewModel = toDoViewModel)
     }
 }

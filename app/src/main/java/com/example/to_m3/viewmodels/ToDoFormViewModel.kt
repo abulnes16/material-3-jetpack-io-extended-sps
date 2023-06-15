@@ -12,7 +12,7 @@ import java.util.Date
 
 const val TAG = "[ToDoFormViewModel]"
 
-class ToDoFormViewModel(private val todoId: String? = null) : ViewModel() {
+class ToDoFormViewModel(private val todoId: Int? = null) : ViewModel() {
     var state by mutableStateOf(
         ToDoFormState(isModalOpen = false, title = "", description = "", category = "")
     )
@@ -39,7 +39,7 @@ class ToDoFormViewModel(private val todoId: String? = null) : ViewModel() {
     private fun createTodo() {
         val (_, title, category, description) = state
         val newTodo = ToDo(
-            id = "",
+            id = 1,
             title = title,
             description = description,
             category = category,

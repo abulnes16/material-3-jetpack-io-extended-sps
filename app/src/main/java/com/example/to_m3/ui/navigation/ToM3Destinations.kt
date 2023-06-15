@@ -21,9 +21,7 @@ object  Details: ToM3Destinations {
     const val argName = "todoId"
     val arguments = listOf(
         navArgument("todoId"){
-            type = NavType.StringType
+            type = NavType.IntType
         }
     )
 }
-
-val destinations = listOf(Home, Details)
