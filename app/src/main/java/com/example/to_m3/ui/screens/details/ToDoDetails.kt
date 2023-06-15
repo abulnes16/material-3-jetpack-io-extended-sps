@@ -25,17 +25,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.to_m3.R
+import com.example.to_m3.data.models.ToDoFormEvent
 import com.example.to_m3.ui.components.Screen
 import com.example.to_m3.ui.components.ToDoForm
 import com.example.to_m3.ui.theme.ToM3Theme
+import com.example.to_m3.viewmodels.ToDoFormViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DetailsScreen(todoId: String?, modifier: Modifier = Modifier) {
-    var openBottomSheet by rememberSaveable() {
-        mutableStateOf(false)
-    }
+fun DetailsScreen(
+    todoId: String?,
+    modifier: Modifier = Modifier,
+    toDoFormViewModel: ToDoFormViewModel = viewModel()
+) {
+
     val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
     Screen(modifier = modifier.padding(top = 8.dp)) {
@@ -77,19 +82,25 @@ fun DetailsScreen(todoId: String?, modifier: Modifier = Modifier) {
                 Text(text = stringResource(id = R.string.delete))
             }
             Button(
-                onClick = { openBottomSheet = !openBottomSheet },
+                onClick = {
+                    toDoFormViewModel.onFormChange(
+                        ToDoFormEvent.OnOpenModalEvent(!toDoFormViewModel.state.isModalOpen)
+                    )
+                },
                 modifier = Modifier.width(150.dp)
             ) {
                 Text(text = stringResource(id = R.string.edit))
             }
         }
 
-        if (openBottomSheet) {
+        if (toDoFormViewModel.state.isModalOpen) {
             ModalBottomSheet(
-                onDismissRequest = { openBottomSheet = false },
+                onDismissRequest = {  toDoFormViewModel.onFormChange(
+                    ToDoFormEvent.OnOpenModalEvent(false)
+                ) },
                 sheetState = bottomSheetState
             ) {
-                ToDoForm(todoId = todoId)
+                ToDoForm(todoId = todoId, toDoViewModel = toDoFormViewModel)
             }
         }
     }

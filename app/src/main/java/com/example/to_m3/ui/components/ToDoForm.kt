@@ -3,9 +3,12 @@ package com.example.to_m3.ui.components
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -17,14 +20,24 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.to_m3.R
+import com.example.to_m3.data.models.ToDoFormEvent
 import com.example.to_m3.ui.theme.ToM3Theme
+import com.example.to_m3.viewmodels.ToDoFormViewModel
+import com.example.to_m3.viewmodels.ToDoViewModel
 
 @Composable
-fun ToDoForm(modifier: Modifier = Modifier, todoId: String? = null) {
+fun ToDoForm(
+    toDoViewModel: ToDoFormViewModel,
+    modifier: Modifier = Modifier,
+    todoId: String? = null
+) {
+    val scrollState = rememberScrollState()
     Column(
         modifier = modifier
             .padding(vertical = 12.dp, horizontal = 16.dp)
-            .fillMaxWidth(),
+            .verticalScroll(scrollState)
+            .fillMaxWidth()
+            .height(500.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -42,20 +55,32 @@ fun ToDoForm(modifier: Modifier = Modifier, todoId: String? = null) {
         }
         TextField(
             placeholder = { Text(text = stringResource(id = R.string.title)) },
-            value = "",
-            onValueChange = {},
+            value = toDoViewModel.state.title,
+            onValueChange = { title -> toDoViewModel.onFormChange(ToDoFormEvent.OnTitleEvent(title)) },
             modifier = Modifier.fillMaxWidth(0.95f)
         )
         TextField(
             placeholder = { Text(text = stringResource(id = R.string.category)) },
-            value = "",
-            onValueChange = {},
+            value = toDoViewModel.state.category,
+            onValueChange = { category ->
+                toDoViewModel.onFormChange(
+                    ToDoFormEvent.OnCategoryEvent(
+                        category
+                    )
+                )
+            },
             modifier = Modifier.fillMaxWidth(0.95f)
         )
         TextField(
             placeholder = { Text(text = stringResource(id = R.string.description)) },
-            value = "",
-            onValueChange = {},
+            value = toDoViewModel.state.description,
+            onValueChange = { description ->
+                toDoViewModel.onFormChange(
+                    ToDoFormEvent.OnDescriptionEvent(
+                        description
+                    )
+                )
+            },
             singleLine = false,
             maxLines = 4,
             modifier = Modifier
@@ -63,7 +88,7 @@ fun ToDoForm(modifier: Modifier = Modifier, todoId: String? = null) {
                 .fillMaxWidth(0.95f)
         )
 
-        Button(onClick = { /*TODO*/ }, modifier = Modifier.fillMaxWidth(0.6f)) {
+        Button(onClick = { toDoViewModel.onSaveToDo() }, modifier = Modifier.fillMaxWidth(0.6f)) {
             Text(text = stringResource(id = R.string.save))
         }
     }
@@ -72,8 +97,9 @@ fun ToDoForm(modifier: Modifier = Modifier, todoId: String? = null) {
 @Preview(showBackground = true)
 @Composable
 fun ToDoFormPreview() {
+    val toDoViewModel = ToDoFormViewModel()
     ToM3Theme() {
-        ToDoForm()
+        ToDoForm(toDoViewModel = toDoViewModel)
     }
 }
 
@@ -81,7 +107,8 @@ fun ToDoFormPreview() {
 @Preview(showBackground = true)
 @Composable
 fun ToDoFormPreviewEdit() {
+    val toDoViewModel = ToDoFormViewModel()
     ToM3Theme() {
-        ToDoForm(todoId = "1")
+        ToDoForm(todoId = "1", toDoViewModel = toDoViewModel)
     }
 }
