@@ -1,5 +1,6 @@
 package com.example.to_m3.data.models
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.util.Date
@@ -8,11 +9,14 @@ import java.util.Date
 data class ToDo(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
+
     var title: String,
     var description: String,
     var category: String,
+    @ColumnInfo(name = "is_completed")
     var isCompleted: Boolean,
-    val creationDate: Date
+    @ColumnInfo(name = "creation_date")
+    val creationDate: String
 )
 
 
@@ -23,7 +27,7 @@ val mockTodos = listOf<ToDo>(
         description = "Lorem ipsum ifactus jkasakdsa",
         category = "home",
         isCompleted = false,
-        creationDate = Date()
+        creationDate = "Hoy"
     ),
     ToDo(
         id = 2,
@@ -31,7 +35,7 @@ val mockTodos = listOf<ToDo>(
         description = "Lorem ipsum ifactus jkasakdsa",
         category = "home",
         isCompleted = false,
-        creationDate = Date()
+        creationDate =  "Hoy"
     ),
     ToDo(
         id = 3,
@@ -39,7 +43,7 @@ val mockTodos = listOf<ToDo>(
         description = "Lorem ipsum ifactus jkasakdsa",
         category = "work",
         isCompleted = false,
-        creationDate = Date()
+        creationDate =  "Hoy"
     ),
     ToDo(
         id = 4,
@@ -47,7 +51,7 @@ val mockTodos = listOf<ToDo>(
         description = "Lorem ipsum ifactus jkasakdsa",
         category = "gdg",
         isCompleted = false,
-        creationDate = Date()
+        creationDate =  "Hoy"
     ),
     ToDo(
         id = 5,
@@ -55,6 +59,6 @@ val mockTodos = listOf<ToDo>(
         description = "Lorem ipsum ifactus jkasakdsa",
         category = "personal",
         isCompleted = false,
-        creationDate = Date()
+        creationDate =  "Hoy"
     ),
 )

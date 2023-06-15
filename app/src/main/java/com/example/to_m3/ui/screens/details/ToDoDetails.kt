@@ -31,6 +31,7 @@ import com.example.to_m3.data.models.ToDoFormEvent
 import com.example.to_m3.ui.components.Screen
 import com.example.to_m3.ui.components.ToDoForm
 import com.example.to_m3.ui.theme.ToM3Theme
+import com.example.to_m3.viewmodels.AppViewModelProvider
 import com.example.to_m3.viewmodels.ToDoFormViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -38,7 +39,7 @@ import com.example.to_m3.viewmodels.ToDoFormViewModel
 fun DetailsScreen(
     todoId: Int?,
     modifier: Modifier = Modifier,
-    toDoFormViewModel: ToDoFormViewModel = viewModel()
+    toDoFormViewModel: ToDoFormViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
 
     val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -95,9 +96,11 @@ fun DetailsScreen(
 
         if (toDoFormViewModel.state.isModalOpen) {
             ModalBottomSheet(
-                onDismissRequest = {  toDoFormViewModel.onFormChange(
-                    ToDoFormEvent.OnOpenModalEvent(false)
-                ) },
+                onDismissRequest = {
+                    toDoFormViewModel.onFormChange(
+                        ToDoFormEvent.OnOpenModalEvent(false)
+                    )
+                },
                 sheetState = bottomSheetState
             ) {
                 ToDoForm(todoId = todoId, toDoViewModel = toDoFormViewModel)

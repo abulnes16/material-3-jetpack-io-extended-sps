@@ -31,15 +31,16 @@ import com.example.to_m3.ui.components.Screen
 import com.example.to_m3.ui.components.ToDoForm
 import com.example.to_m3.ui.components.ToDoItem
 import com.example.to_m3.ui.theme.ToM3Theme
+import com.example.to_m3.viewmodels.AppViewModelProvider
 import com.example.to_m3.viewmodels.ToDoFormViewModel
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-    onTodoClick: (String) -> Unit,
+    onTodoClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
-    toDoFormViewModel: ToDoFormViewModel = viewModel()
+    toDoFormViewModel: ToDoFormViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
 
     val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -72,9 +73,11 @@ fun HomeScreen(
 
         if (toDoFormViewModel.state.isModalOpen) {
             ModalBottomSheet(
-                onDismissRequest = { toDoFormViewModel.onFormChange(
-                    ToDoFormEvent.OnOpenModalEvent(!toDoFormViewModel.state.isModalOpen)
-                ) },
+                onDismissRequest = {
+                    toDoFormViewModel.onFormChange(
+                        ToDoFormEvent.OnOpenModalEvent(!toDoFormViewModel.state.isModalOpen)
+                    )
+                },
                 sheetState = bottomSheetState
             ) {
                 ToDoForm(toDoViewModel = toDoFormViewModel)
