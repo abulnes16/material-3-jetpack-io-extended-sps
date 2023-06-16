@@ -34,7 +34,7 @@ class ToDoFormViewModel(
         }
     }
 
-    suspend fun onSaveToDo() {
+    suspend fun onSaveToDo(onError: () -> Unit, onSuccess: () -> Unit) {
         // We validate that the ToDo is completed
         if (!validateToDo()) {
             return
@@ -42,9 +42,9 @@ class ToDoFormViewModel(
 
 
         if (todoId != null) {
-            updateTodo()
+            updateTodo(onError, onSuccess)
         } else {
-            createTodo()
+            createTodo(onError, onSuccess)
         }
     }
 
@@ -57,25 +57,23 @@ class ToDoFormViewModel(
         return true
     }
 
-    private suspend  fun createTodo() {
+    private suspend fun createTodo(onError: () -> Unit, onSuccess: () -> Unit) {
         val (_, title, category, description) = state
         val newTodo = ToDo(
             id = 1,
             title = title,
             description = description,
             category = category,
-            creationDate =  "Hoy",
+            creationDate = "Hoy",
             isCompleted = false
         )
 
         // TODO: Save on Database
         Log.d(TAG, newTodo.toString())
 
-
-
     }
 
-    private fun updateTodo() {
+    private suspend fun updateTodo(onError: () -> Unit, onSuccess: () -> Unit) {
 
     }
 
