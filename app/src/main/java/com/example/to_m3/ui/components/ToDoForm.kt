@@ -19,17 +19,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.to_m3.R
+import com.example.to_m3.data.models.ToDo
 import com.example.to_m3.data.models.ToDoFormEvent
+import com.example.to_m3.data.models.mockTodos
 import com.example.to_m3.ui.theme.ToM3Theme
 import com.example.to_m3.viewmodels.ToDoFormViewModel
 import com.example.to_m3.viewmodels.ToDoViewModel
 
 @Composable
 fun ToDoForm(
-    toDoViewModel: ToDoFormViewModel,
     modifier: Modifier = Modifier,
-    todoId: Int? = null
+    toDoViewModel: ToDoFormViewModel = viewModel(),
+    todo: ToDo? = null
 ) {
     val scrollState = rememberScrollState()
     Column(
@@ -48,7 +51,7 @@ fun ToDoForm(
 
             Text(
                 text = stringResource(
-                    id = if (todoId != null) R.string.edit_todo else R.string.create_todo
+                    id = if (todo != null) R.string.edit_todo else R.string.create_todo
                 ),
                 style = MaterialTheme.typography.titleLarge
             )
@@ -88,7 +91,10 @@ fun ToDoForm(
                 .fillMaxWidth(0.95f)
         )
 
-        Button(onClick = { toDoViewModel.onSaveToDo() }, modifier = Modifier.fillMaxWidth(0.6f)) {
+        Button(
+            onClick = { toDoViewModel.onSaveToDo(onError = {}, onSuccess = {}) },
+            modifier = Modifier.fillMaxWidth(0.6f)
+        ) {
             Text(text = stringResource(id = R.string.save))
         }
     }
@@ -97,9 +103,9 @@ fun ToDoForm(
 @Preview(showBackground = true)
 @Composable
 fun ToDoFormPreview() {
-    val toDoViewModel = ToDoFormViewModel()
+
     ToM3Theme() {
-        ToDoForm(toDoViewModel = toDoViewModel)
+        ToDoForm()
     }
 }
 
@@ -107,8 +113,9 @@ fun ToDoFormPreview() {
 @Preview(showBackground = true)
 @Composable
 fun ToDoFormPreviewEdit() {
-    val toDoViewModel = ToDoFormViewModel()
+
     ToM3Theme() {
-        ToDoForm(todoId = 1, toDoViewModel = toDoViewModel)
+        val mockTodo = mockTodos.first()
+        ToDoForm(todo = mockTodo)
     }
 }

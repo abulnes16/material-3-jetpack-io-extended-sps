@@ -28,18 +28,20 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.to_m3.R
 import com.example.to_m3.data.models.ToDoFormEvent
+import com.example.to_m3.data.models.mockTodos
 import com.example.to_m3.ui.components.Screen
 import com.example.to_m3.ui.components.ToDoForm
 import com.example.to_m3.ui.theme.ToM3Theme
 import com.example.to_m3.viewmodels.AppViewModelProvider
 import com.example.to_m3.viewmodels.ToDoFormViewModel
+import com.example.to_m3.viewmodels.ToDoViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailsScreen(
-    todoId: Int?,
     modifier: Modifier = Modifier,
-    toDoFormViewModel: ToDoFormViewModel = viewModel(factory = AppViewModelProvider.Factory)
+    toDoFormViewModel: ToDoFormViewModel = viewModel(factory = AppViewModelProvider.Factory),
+    toDoViewModel: ToDoViewModel = viewModel()
 ) {
 
     val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -103,7 +105,7 @@ fun DetailsScreen(
                 },
                 sheetState = bottomSheetState
             ) {
-                ToDoForm(todoId = todoId, toDoViewModel = toDoFormViewModel)
+                ToDoForm(todo = toDoViewModel.state.currentTodo, toDoViewModel = toDoFormViewModel)
             }
         }
     }
@@ -114,7 +116,7 @@ fun DetailsScreen(
 @Composable
 fun DetailScreenPreview() {
     ToM3Theme() {
-        DetailsScreen(todoId = 1)
+        DetailsScreen()
     }
 
 }

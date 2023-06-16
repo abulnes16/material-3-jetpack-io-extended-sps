@@ -21,18 +21,14 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.to_m3.ui.components.Screen
 import com.example.to_m3.ui.components.ToM3TopBar
 import com.example.to_m3.ui.navigation.Details
 import com.example.to_m3.ui.navigation.Home
 import com.example.to_m3.ui.navigation.ToM3NavHost
-import com.example.to_m3.ui.navigation.destinations
 import com.example.to_m3.ui.theme.ToM3Theme
 
 class MainActivity : ComponentActivity() {

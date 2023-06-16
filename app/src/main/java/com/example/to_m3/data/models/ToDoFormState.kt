@@ -6,3 +6,9 @@ data class ToDoFormState(
     var category: String,
     var description: String,
 )
+
+data class ToDoState(
+    val todos: List<ToDo>,
+    val currentTodo: ToDo?,
+    val loading: Boolean,
+)
