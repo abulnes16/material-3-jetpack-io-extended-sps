@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.to_m3.data.models.ToDoEvent
 import com.example.to_m3.data.models.ToDoState
 import com.example.to_m3.data.repository.ToDoRepository
 import kotlinx.coroutines.launch
@@ -15,13 +16,26 @@ const val TAG_TODO: String = "[ToDoViewModel]"
 class ToDoViewModel(private val toDoRepository: ToDoRepository) :
     ViewModel() {
 
-    var state by mutableStateOf(ToDoState(todos = listOf(), currentTodo = null, loading = true))
+    var state by mutableStateOf(
+        ToDoState(
+            todos = listOf(),
+            currentTodo = null,
+            loading = true,
+            showDialog = false
+        )
+    )
         private set
 
     init {
         getTodos()
     }
 
+
+    fun onChangeState(event: ToDoEvent) {
+        when (event) {
+            is ToDoEvent.OnOpenDeleteDialog -> state = state.copy(showDialog = event.isDialogOpen)
+        }
+    }
 
     fun deleteTodo(onError: () -> Unit, onSuccess: () -> Unit) {
         viewModelScope.launch {

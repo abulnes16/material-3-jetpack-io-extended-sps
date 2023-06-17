@@ -14,4 +14,8 @@
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
     <string name="is_completed">Is completed?</string>
+    <string name="confirm_delete">Are you sure to delete the To-Do?</string>
+    <string name="delete_info">All the data will be lost </string>
+    <string name="confirm">Confirm</string>
+    <string name="dismiss">Dismiss</string>
 </resources>

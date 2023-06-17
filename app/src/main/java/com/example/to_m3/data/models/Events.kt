@@ -6,3 +6,7 @@ sealed class ToDoFormEvent {
     data class OnDescriptionEvent(val description: String): ToDoFormEvent()
     data class OnCategoryEvent(val category: String): ToDoFormEvent()
 }
+
+sealed class ToDoEvent {
+    data class OnOpenDeleteDialog(val isDialogOpen: Boolean): ToDoEvent()
+}

@@ -1,5 +1,6 @@
 package com.example.to_m3.ui.screens.details
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,13 +25,16 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.to_m3.R
+import com.example.to_m3.data.models.ToDoEvent
 import com.example.to_m3.data.models.ToDoFormEvent
 import com.example.to_m3.data.models.mockTodos
+import com.example.to_m3.ui.components.DeleteToDoDialog
 import com.example.to_m3.ui.components.Screen
 import com.example.to_m3.ui.components.ToDoForm
 import com.example.to_m3.ui.theme.ToM3Theme
@@ -41,6 +45,7 @@ import com.example.to_m3.viewmodels.ToDoViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailsScreen(
+    onSuccessDelete: () -> Unit,
     modifier: Modifier = Modifier,
     todoId: Int? = null,
     toDoFormViewModel: ToDoFormViewModel = viewModel(factory = AppViewModelProvider.Factory),
@@ -48,6 +53,7 @@ fun DetailsScreen(
 ) {
 
     val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val context = LocalContext.current
 
     LaunchedEffect(key1 = toDoViewModel.state.currentTodo) {
         if (todoId != null) {
@@ -100,7 +106,7 @@ fun DetailsScreen(
                     .padding(top = 8.dp)
             ) {
                 Button(
-                    onClick = { toDoViewModel.deleteTodo(onError = {}, onSuccess = {}) },
+                    onClick = { toDoViewModel.onChangeState(ToDoEvent.OnOpenDeleteDialog(true)) },
                     modifier = Modifier.width(150.dp)
                 ) {
                     Text(text = stringResource(id = R.string.delete))
@@ -122,6 +128,27 @@ fun DetailsScreen(
                 ToDoForm(todo = toDoViewModel.state.currentTodo, toDoViewModel = toDoFormViewModel)
             }
         }
+
+        if (toDoViewModel.state.showDialog) {
+            DeleteToDoDialog(onDismiss = {
+                toDoViewModel.onChangeState(
+                    ToDoEvent.OnOpenDeleteDialog(
+                        false
+                    )
+                )
+            }, onConfirm = {
+                toDoViewModel.deleteTodo(
+                    onError = {
+                        Toast.makeText(
+                            context,
+                            "We couldn't delete the To-Do please try again",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }, onSuccess = onSuccessDelete
+                )
+            })
+        }
+
     }
 
 }
@@ -130,7 +157,7 @@ fun DetailsScreen(
 @Composable
 fun DetailScreenPreview() {
     ToM3Theme() {
-        DetailsScreen()
+        DetailsScreen({})
     }
 
 }

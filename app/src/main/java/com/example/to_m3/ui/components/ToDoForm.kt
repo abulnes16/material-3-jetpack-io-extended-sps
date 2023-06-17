@@ -48,7 +48,7 @@ fun ToDoForm(
             .padding(vertical = 12.dp, horizontal = 16.dp)
             .verticalScroll(scrollState)
             .fillMaxWidth()
-            .height(500.dp),
+            .height(550.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -116,7 +116,6 @@ fun ToDoForm(
 @Preview(showBackground = true)
 @Composable
 fun ToDoFormPreview() {
-
     ToM3Theme() {
         ToDoForm()
     }

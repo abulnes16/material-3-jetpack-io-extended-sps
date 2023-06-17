@@ -31,7 +31,7 @@ fun ToM3NavHost(
         composable(Details.routeWithArgs, arguments = Details.arguments) { backStackEntry ->
             val todoId = backStackEntry.arguments?.getInt(Details.argName)
 
-            DetailsScreen(todoId = todoId)
+            DetailsScreen(todoId = todoId, onSuccessDelete = { navController.popBackStack() })
         }
     }
 }

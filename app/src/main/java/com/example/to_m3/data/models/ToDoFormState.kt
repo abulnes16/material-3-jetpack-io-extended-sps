@@ -11,4 +11,5 @@ data class ToDoState(
     val todos: List<ToDo>,
     val currentTodo: ToDo?,
     val loading: Boolean,
+    val showDialog: Boolean,
 )
