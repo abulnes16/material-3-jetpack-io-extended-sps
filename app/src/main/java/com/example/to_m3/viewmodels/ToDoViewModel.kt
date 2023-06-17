@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 
 const val TAG_TODO: String = "[ToDoViewModel]"
 
-class ToDoViewModel(private val todoId: Int? = null, private val toDoRepository: ToDoRepository) :
+class ToDoViewModel(private val toDoRepository: ToDoRepository) :
     ViewModel() {
 
     var state by mutableStateOf(ToDoState(todos = listOf(), currentTodo = null, loading = true))
@@ -20,8 +20,6 @@ class ToDoViewModel(private val todoId: Int? = null, private val toDoRepository:
 
     init {
         getTodos()
-        getTodoById()
-
     }
 
 
@@ -54,21 +52,21 @@ class ToDoViewModel(private val todoId: Int? = null, private val toDoRepository:
         }
     }
 
-    private fun getTodoById() {
-        if (todoId != null) {
-            viewModelScope.launch {
-                try {
-                    toDoRepository.getToDo(todoId).collect {
-                        state = state.copy(
-                            currentTodo = it,
-                            loading = false
-                        )
-                    }
-                } catch (error: Exception) {
-                    Log.e(TAG_TODO, error.toString())
+    fun getTodoById(todoId: Int) {
+
+        viewModelScope.launch {
+            try {
+                toDoRepository.getToDo(todoId).collect {
+                    state = state.copy(
+                        currentTodo = it,
+                        loading = false
+                    )
                 }
+            } catch (error: Exception) {
+                Log.e(TAG_TODO, error.toString())
             }
         }
+
     }
 
     private fun getTodos() {

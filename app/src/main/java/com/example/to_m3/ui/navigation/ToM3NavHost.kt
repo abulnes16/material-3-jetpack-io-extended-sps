@@ -30,15 +30,8 @@ fun ToM3NavHost(
         }
         composable(Details.routeWithArgs, arguments = Details.arguments) { backStackEntry ->
             val todoId = backStackEntry.arguments?.getInt(Details.argName)
-            val todoViewModel: ToDoViewModel =
-                viewModel(factory = viewModelFactory {
-                    ToDoViewModel(
-                        todoId = todoId,
-                        toDoRepository = ToDoApplication().container.toDoRepository
-                    )
-                })
 
-            DetailsScreen(toDoViewModel = todoViewModel)
+            DetailsScreen(todoId = todoId)
         }
     }
 }

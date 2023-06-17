@@ -10,12 +10,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -40,61 +42,73 @@ import com.example.to_m3.viewmodels.ToDoViewModel
 @Composable
 fun DetailsScreen(
     modifier: Modifier = Modifier,
+    todoId: Int? = null,
     toDoFormViewModel: ToDoFormViewModel = viewModel(factory = AppViewModelProvider.Factory),
-    toDoViewModel: ToDoViewModel = viewModel()
+    toDoViewModel: ToDoViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
 
     val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
+    LaunchedEffect(key1 = toDoViewModel.state.currentTodo) {
+        if (todoId != null) {
+            toDoViewModel.getTodoById(todoId)
+        }
+    }
+
     Screen(modifier = modifier.padding(top = 8.dp)) {
-        Card(
-            modifier = Modifier
-                .fillMaxWidth(0.95f)
-                .fillMaxHeight(0.5f)
-        ) {
-            Column(
+        if (toDoViewModel.state.loading) {
+            CircularProgressIndicator()
+        } else {
+            Card(
                 modifier = Modifier
-                    .padding(16.dp)
-                    .fillMaxSize(),
-                verticalArrangement = Arrangement.SpaceBetween
+                    .fillMaxWidth(0.95f)
+                    .fillMaxHeight(0.5f)
             ) {
-                Column {
-                    Text(text = "Title")
-                    Text(text = "Category")
-                    Text(text = "Description")
-                }
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier.fillMaxWidth()
+                Column(
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .fillMaxSize(),
+                    verticalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Switch(checked = false, onCheckedChange = {})
-                    Text(text = stringResource(id = R.string.is_completed))
+                    Column {
+                        Text(text = toDoViewModel.state.currentTodo?.title ?: "")
+                        Text(text = toDoViewModel.state.currentTodo?.category ?: "")
+                        Text(text = toDoViewModel.state.currentTodo?.description ?: "")
+                    }
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Switch(
+                            checked = toDoViewModel.state.currentTodo?.isCompleted ?: false,
+                            onCheckedChange = {
+                                toDoViewModel.updateCompletion(
+                                    !(toDoViewModel.state.currentTodo?.isCompleted ?: false)
+                                )
+                            })
+                        Text(text = stringResource(id = R.string.is_completed))
+                    }
+
+                }
+            }
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp)
+            ) {
+                Button(
+                    onClick = { toDoViewModel.deleteTodo(onError = {}, onSuccess = {}) },
+                    modifier = Modifier.width(150.dp)
+                ) {
+                    Text(text = stringResource(id = R.string.delete))
                 }
 
             }
         }
-        Row(
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 8.dp)
-        ) {
-            Button(onClick = { /*TODO*/ }, modifier = Modifier.width(150.dp)) {
-                Text(text = stringResource(id = R.string.delete))
-            }
-            Button(
-                onClick = {
-                    toDoFormViewModel.onFormChange(
-                        ToDoFormEvent.OnOpenModalEvent(!toDoFormViewModel.state.isModalOpen)
-                    )
-                },
-                modifier = Modifier.width(150.dp)
-            ) {
-                Text(text = stringResource(id = R.string.edit))
-            }
-        }
+
 
         if (toDoFormViewModel.state.isModalOpen) {
             ModalBottomSheet(

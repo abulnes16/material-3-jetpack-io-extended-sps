@@ -14,6 +14,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -35,6 +36,13 @@ fun ToDoForm(
     todo: ToDo? = null
 ) {
     val scrollState = rememberScrollState()
+
+    LaunchedEffect(key1 = todo) {
+        if (todo != null) {
+            toDoViewModel.setupCurrentTodo(todo)
+        }
+    }
+
     Column(
         modifier = modifier
             .padding(vertical = 12.dp, horizontal = 16.dp)
@@ -60,8 +68,9 @@ fun ToDoForm(
             placeholder = { Text(text = stringResource(id = R.string.title)) },
             value = toDoViewModel.state.title,
             onValueChange = { title -> toDoViewModel.onFormChange(ToDoFormEvent.OnTitleEvent(title)) },
-            modifier = Modifier.fillMaxWidth(0.95f)
-        )
+            modifier = Modifier.fillMaxWidth(0.95f),
+
+            )
         TextField(
             placeholder = { Text(text = stringResource(id = R.string.category)) },
             value = toDoViewModel.state.category,
@@ -75,7 +84,11 @@ fun ToDoForm(
             modifier = Modifier.fillMaxWidth(0.95f)
         )
         TextField(
-            placeholder = { Text(text = stringResource(id = R.string.description)) },
+            placeholder = {
+                Text(
+                    text = stringResource(id = R.string.description)
+                )
+            },
             value = toDoViewModel.state.description,
             onValueChange = { description ->
                 toDoViewModel.onFormChange(
@@ -92,7 +105,7 @@ fun ToDoForm(
         )
 
         Button(
-            onClick = { toDoViewModel.onSaveToDo(onError = {}, onSuccess = {}) },
+            onClick = { toDoViewModel.onSaveToDo(onError = {}, onSuccess = {}, todo) },
             modifier = Modifier.fillMaxWidth(0.6f)
         ) {
             Text(text = stringResource(id = R.string.save))

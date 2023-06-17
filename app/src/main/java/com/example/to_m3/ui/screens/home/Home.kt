@@ -10,6 +10,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -33,6 +34,7 @@ import com.example.to_m3.ui.components.ToDoItem
 import com.example.to_m3.ui.theme.ToM3Theme
 import com.example.to_m3.viewmodels.AppViewModelProvider
 import com.example.to_m3.viewmodels.ToDoFormViewModel
+import com.example.to_m3.viewmodels.ToDoViewModel
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -40,21 +42,27 @@ import com.example.to_m3.viewmodels.ToDoFormViewModel
 fun HomeScreen(
     onTodoClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
-    toDoFormViewModel: ToDoFormViewModel = viewModel(factory = AppViewModelProvider.Factory)
+    toDoFormViewModel: ToDoFormViewModel = viewModel(factory = AppViewModelProvider.Factory),
+    toDoViewModel: ToDoViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
 
     val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
     Screen(modifier = modifier.padding(vertical = 8.dp)) {
-        val scrollState = rememberLazyListState()
-        LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp), state = scrollState) {
-            items(mockTodos) { todo ->
-                ToDoItem(
-                    title = todo.title,
-                    description = todo.description,
-                    onClick = { onTodoClick(todo.id) })
+        if (toDoViewModel.state.loading) {
+            CircularProgressIndicator()
+        } else {
+            val scrollState = rememberLazyListState()
+            LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp), state = scrollState) {
+                items(toDoViewModel.state.todos) { todo ->
+                    ToDoItem(
+                        title = todo.title,
+                        description = todo.description,
+                        onClick = { onTodoClick(todo.id) })
+                }
             }
         }
+
 
         Box(modifier = Modifier.fillMaxSize()) {
             FloatingActionButton(

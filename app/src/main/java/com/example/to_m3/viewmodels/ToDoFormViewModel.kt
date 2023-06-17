@@ -19,7 +19,6 @@ const val TAG = "[ToDoFormViewModel]"
 
 class ToDoFormViewModel(
     private val toDoRepository: ToDoRepository,
-    private val todo: ToDo? = null
 ) : ViewModel() {
     var state by mutableStateOf(
         ToDoFormState(isModalOpen = false, title = "", description = "", category = "")
@@ -36,14 +35,14 @@ class ToDoFormViewModel(
         }
     }
 
-    fun onSaveToDo(onError: () -> Unit, onSuccess: () -> Unit) {
+    fun onSaveToDo(onError: () -> Unit, onSuccess: () -> Unit, todo: ToDo? = null) {
         // We validate that the ToDo is completed
         if (!validateToDo()) {
             return
         }
-
+        Log.d(TAG, todo?.toString() ?: "")
         if (todo != null) {
-            updateTodo(onError, onSuccess)
+            updateTodo(onError, onSuccess, todo)
         } else {
             createTodo(onError, onSuccess)
         }
@@ -81,15 +80,15 @@ class ToDoFormViewModel(
         }
     }
 
-    private  fun updateTodo(onError: () -> Unit, onSuccess: () -> Unit) {
+    private fun updateTodo(onError: () -> Unit, onSuccess: () -> Unit, todo: ToDo) {
         viewModelScope.launch {
             try {
-                val updatedTodo = todo?.copy(
+                val updatedTodo = todo.copy(
                     title = state.title,
                     description = state.description,
                     category = state.category
                 )
-                toDoRepository.insertToDo(updatedTodo!!)
+                toDoRepository.insertToDo(updatedTodo)
                 state = state.copy(isModalOpen = false)
                 onSuccess()
             } catch (error: Exception) {
@@ -97,6 +96,14 @@ class ToDoFormViewModel(
                 onError()
             }
         }
+    }
+
+    fun setupCurrentTodo(todo: ToDo) {
+        state = state.copy(
+            title = todo.title,
+            category = todo.category,
+            description = todo.description
+        )
     }
 
 
