@@ -40,7 +40,6 @@ class ToDoFormViewModel(
         if (!validateToDo()) {
             return
         }
-        Log.d(TAG, todo?.toString() ?: "")
         if (todo != null) {
             updateTodo(onError, onSuccess, todo)
         } else {

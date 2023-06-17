@@ -1,5 +1,6 @@
 package com.example.to_m3.ui.components
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -36,6 +38,7 @@ fun ToDoForm(
     todo: ToDo? = null
 ) {
     val scrollState = rememberScrollState()
+    val context = LocalContext.current
 
     LaunchedEffect(key1 = todo) {
         if (todo != null) {
@@ -105,7 +108,7 @@ fun ToDoForm(
         )
 
         Button(
-            onClick = { toDoViewModel.onSaveToDo(onError = {}, onSuccess = {}, todo) },
+            onClick = {},
             modifier = Modifier.fillMaxWidth(0.6f)
         ) {
             Text(text = stringResource(id = R.string.save))

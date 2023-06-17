@@ -89,9 +89,7 @@ fun DetailsScreen(
                         Switch(
                             checked = toDoViewModel.state.currentTodo?.isCompleted ?: false,
                             onCheckedChange = {
-                                toDoViewModel.updateCompletion(
-                                    !(toDoViewModel.state.currentTodo?.isCompleted ?: false)
-                                )
+
                             })
                         Text(text = stringResource(id = R.string.is_completed))
                     }
@@ -139,11 +137,7 @@ fun DetailsScreen(
             }, onConfirm = {
                 toDoViewModel.deleteTodo(
                     onError = {
-                        Toast.makeText(
-                            context,
-                            "We couldn't delete the To-Do please try again",
-                            Toast.LENGTH_LONG
-                        ).show()
+
                     }, onSuccess = onSuccessDelete
                 )
             })

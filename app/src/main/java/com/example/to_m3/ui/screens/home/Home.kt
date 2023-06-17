@@ -54,7 +54,7 @@ fun HomeScreen(
         } else {
             val scrollState = rememberLazyListState()
             LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp), state = scrollState) {
-                items(toDoViewModel.state.todos) { todo ->
+                items(mockTodos) { todo ->
                     ToDoItem(
                         title = todo.title,
                         description = todo.description,
