@@ -13,16 +13,14 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -33,7 +31,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.to_m3.R
 import com.example.to_m3.data.models.ToDoEvent
 import com.example.to_m3.data.models.ToDoFormEvent
-import com.example.to_m3.data.models.mockTodos
 import com.example.to_m3.ui.components.DeleteToDoDialog
 import com.example.to_m3.ui.components.Screen
 import com.example.to_m3.ui.components.ToDoForm
@@ -105,11 +102,18 @@ fun DetailsScreen(
                     .fillMaxWidth()
                     .padding(top = 8.dp)
             ) {
-                Button(
+
+                OutlinedButton(
                     onClick = { toDoViewModel.onChangeState(ToDoEvent.OnOpenDeleteDialog(true)) },
                     modifier = Modifier.width(150.dp)
                 ) {
                     Text(text = stringResource(id = R.string.delete))
+                }
+                FilledTonalButton(
+                    onClick = { toDoFormViewModel.onFormChange(ToDoFormEvent.OnOpenModalEvent(true)) },
+                    modifier = Modifier.width(150.dp)
+                ) {
+                    Text(text = stringResource(id = R.string.edit))
                 }
 
             }
@@ -156,7 +160,7 @@ fun DetailsScreen(
 @Preview(showBackground = true)
 @Composable
 fun DetailScreenPreview() {
-    ToM3Theme() {
+    ToM3Theme {
         DetailsScreen({})
     }
 

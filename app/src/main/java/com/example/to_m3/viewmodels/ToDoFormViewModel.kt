@@ -88,7 +88,8 @@ class ToDoFormViewModel(
                     description = state.description,
                     category = state.category
                 )
-                toDoRepository.insertToDo(updatedTodo)
+                Log.d(TAG, updatedTodo.toString())
+                toDoRepository.updateToDo(updatedTodo)
                 state = state.copy(isModalOpen = false)
                 onSuccess()
             } catch (error: Exception) {

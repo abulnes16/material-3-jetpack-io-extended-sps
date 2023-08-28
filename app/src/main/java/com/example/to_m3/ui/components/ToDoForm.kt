@@ -3,7 +3,6 @@ package com.example.to_m3.ui.components
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -27,7 +26,6 @@ import com.example.to_m3.data.models.ToDoFormEvent
 import com.example.to_m3.data.models.mockTodos
 import com.example.to_m3.ui.theme.ToM3Theme
 import com.example.to_m3.viewmodels.ToDoFormViewModel
-import com.example.to_m3.viewmodels.ToDoViewModel
 
 @Composable
 fun ToDoForm(
@@ -48,7 +46,7 @@ fun ToDoForm(
             .padding(vertical = 12.dp, horizontal = 16.dp)
             .verticalScroll(scrollState)
             .fillMaxWidth()
-            .height(550.dp),
+            .height(450.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -116,7 +114,7 @@ fun ToDoForm(
 @Preview(showBackground = true)
 @Composable
 fun ToDoFormPreview() {
-    ToM3Theme() {
+    ToM3Theme {
         ToDoForm()
     }
 }
@@ -126,7 +124,7 @@ fun ToDoFormPreview() {
 @Composable
 fun ToDoFormPreviewEdit() {
 
-    ToM3Theme() {
+    ToM3Theme{
         val mockTodo = mockTodos.first()
         ToDoForm(todo = mockTodo)
     }

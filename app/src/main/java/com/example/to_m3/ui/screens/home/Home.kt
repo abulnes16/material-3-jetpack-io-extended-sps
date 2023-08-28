@@ -58,6 +58,7 @@ fun HomeScreen(
                     ToDoItem(
                         title = todo.title,
                         description = todo.description,
+                        isCompleted = todo.isCompleted,
                         onClick = { onTodoClick(todo.id) })
                 }
             }

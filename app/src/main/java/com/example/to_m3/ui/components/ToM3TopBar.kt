@@ -1,6 +1,7 @@
 package com.example.to_m3.ui.components
 
 import android.util.Log
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -9,11 +10,13 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.example.to_m3.R
 import com.example.to_m3.ui.navigation.Details
 import com.example.to_m3.ui.navigation.Home
@@ -29,8 +32,13 @@ fun ToM3TopBar(
     title: String? = null,
 ) {
     Log.d("[Top Tap App]", currentScreen.route)
-    CenterAlignedTopAppBar(
-        title = { Text(text = title ?: stringResource(id = R.string.app_name)) },
+    TopAppBar(
+        title = {
+            Text(
+                text = title ?: stringResource(id = R.string.app_name),
+                style = if (currentScreen === Home) MaterialTheme.typography.displaySmall else MaterialTheme.typography.titleLarge
+            )
+        },
         navigationIcon = {
             if (currentScreen === Details) {
                 IconButton(onClick = onGoBack) {
@@ -38,12 +46,7 @@ fun ToM3TopBar(
                 }
             }
         },
-        modifier = modifier,
-        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer,
-            navigationIconContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-            titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
-        )
+        modifier = modifier.padding(16.dp),
     )
 }
 

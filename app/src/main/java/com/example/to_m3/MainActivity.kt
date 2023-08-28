@@ -40,7 +40,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+
 @Composable
 fun ToM3App() {
 
